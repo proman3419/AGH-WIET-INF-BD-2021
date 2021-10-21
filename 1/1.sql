@@ -1,3 +1,5 @@
+use library
+
 -- 1
 select title_no, title from title
 
@@ -14,7 +16,7 @@ where fine_assessed between 8.00 and 9.00
 select member_no, fine_assessed
 from loanhist
 where fine_assessed  -
-      (coalesce(fine_paid, 0) + coalesce(fine_waived, 0))
+      (isnull(fine_paid, 0) + isnull(fine_waived, 0))
     between 8.00 and 9.00
 
 -- 4
@@ -29,11 +31,10 @@ where title like '%adventures%'
 
 -- 6
 -- zał, że chodzi o niezapłaconą w pełni
-select member_no, fine_assessed, coalesce(fine_paid, 0) as fine_paid
+select member_no, fine_assessed, fine_paid, fine_waived
 from loanhist
-where fine_assessed  -
-      (coalesce(fine_paid, 0) + coalesce(fine_waived, 0))
-    != 0
+where isnull(fine_assessed, 0)  -
+      (isnull(fine_paid, 0) + isnull(fine_waived, 0)) > 0
 
 -- 7
 select distinct city, state

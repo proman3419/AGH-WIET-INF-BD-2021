@@ -1,12 +1,14 @@
+use library
+
 -- 1
 select title
 from title
 order by title
 
 -- 2
-select member_no, isbn, fine_assessed, fine_assessed * 2 as 'double fine'
+select distinct member_no, isbn, fine_assessed, fine_assessed * 2 as 'double fine'
 from loanhist
-where coalesce(fine_assessed, 0) != 0
+where isnull(fine_assessed, 0) != 0
 
 -- 3
 select firstname + middleinitial + lastname as 'email_name'
