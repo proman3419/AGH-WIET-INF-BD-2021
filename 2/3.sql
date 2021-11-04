@@ -13,6 +13,5 @@ group by ShipVia
 -- 3
 select ShipVia, sum(Freight) as FreightSum
 from Orders
-where (year(OrderDate) between 1996 and 1997) or
-      (year(ShippedDate) between 1996 and 1997)
+where year(ShippedDate) between 1996 and 1997
 group by ShipVia
