@@ -1,20 +1,25 @@
 use Northwind
 
--- 1
-select FirstName, LastName, sum(OD.UnitPrice * Quantity * (1 - Discount)) as OrdersValue
-from Employees E
-    left join Orders O
-        on E.EmployeeID = O.EmployeeID
+-- 1a
+select distinct Employer.FirstName, Employer.LastName, sum(OD.UnitPrice * Quantity * (1 - Discount)) as OrdersValue
+from Employees Employer
+    inner join Orders O
+        on Employer.EmployeeID = O.EmployeeID
     inner join [Order Details] OD
         on O.OrderID = OD.OrderID
-group by E.EmployeeID, FirstName, LastName
+    left join Employees Employee
+        on Employer.EmployeeID = Employee.ReportsTo
+where Employee.ReportsTo is not null
+group by Employer.EmployeeID, Employer.FirstName, Employer.LastName, Employee.EmployeeID
 
--- 2
-select top 1 FirstName, LastName, sum(OD.UnitPrice * Quantity * (1 - Discount)) as OrdersValue
-from Employees E
-    left join Orders O
-        on E.EmployeeID = O.EmployeeID
+-- 1b
+select Employer.FirstName, Employer.LastName, sum(OD.UnitPrice * Quantity * (1 - Discount)) as OrdersValue
+from Employees Employer
+    inner join Orders O
+        on Employer.EmployeeID = O.EmployeeID
     inner join [Order Details] OD
         on O.OrderID = OD.OrderID
-where year(OrderDate) = 1997
-group by E.EmployeeID, FirstName, LastName
+    left join Employees Employee
+        on Employer.EmployeeID = Employee.ReportsTo
+where Employee.ReportsTo is null
+group by Employer.EmployeeID, Employer.FirstName, Employer.LastName
