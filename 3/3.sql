@@ -18,13 +18,14 @@ group by CompanyName
 order by count(*) desc
 
 -- 3
-select FirstName, LastName, sum(OD.UnitPrice * Quantity * (1 - Discount)) as OrdersValue
+select FirstName, LastName, round(sum(OD.UnitPrice * Quantity * (1 - Discount)), 2) as OrdersValue
 from Employees E
     inner join Orders O
         on E.EmployeeID = O.EmployeeID
     inner join [Order Details] OD
         on O.OrderID = OD.OrderID
 group by E.EmployeeID, FirstName, LastName
+order by 3 desc
 
 -- 4
 select top 1 FirstName, LastName
