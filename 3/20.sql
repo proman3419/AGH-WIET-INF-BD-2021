@@ -19,7 +19,7 @@ from Products P
 where CategoryName = 'Confections'
 
 -- 3
-select C.CompanyName, C.Phone
+select distinct C.CompanyName, C.Phone
 from Orders O
     inner join Customers C
         on O.CustomerID = C.CustomerID
