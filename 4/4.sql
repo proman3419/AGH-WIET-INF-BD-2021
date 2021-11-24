@@ -6,13 +6,13 @@ select (select round(sum([O D].UnitPrice * Quantity * (1 - Discount)), 2)
         from Orders O
             inner join [Order Details] [O D]
                 on O.OrderID = [O D].OrderID
-        where O.OrderID = 11077) - Freight as OrderValue
+        where O.OrderID = 11077) + Freight as OrderValue
 from Orders
 where OrderID = 11077
 
 -- 2
-select O2.OrderID, round(OrderValueWithFreight - Freight, 2) as OrderValue
-from (select O.OrderID, sum([O D].UnitPrice * Quantity * (1 - Discount)) as OrderValueWithFreight
+select O2.OrderID, round(OrderValueWithoutFreight + Freight, 2) as OrderValue
+from (select O.OrderID, sum([O D].UnitPrice * Quantity * (1 - Discount)) as OrderValueWithoutFreight
         from Orders O
             inner join [Order Details] [O D]
                 on O.OrderID = [O D].OrderID

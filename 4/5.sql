@@ -2,8 +2,8 @@ use Northwind
 
 -- 1
 select E.FirstName, E.LastName, round(sum(sub2.OrderValue), 2) as OrderValue
-from (select E.EmployeeID, sum(OrderValueWithFreight) - Freight as OrderValue
-        from (select O.OrderID, sum([O D].UnitPrice * Quantity * (1 - Discount)) as OrderValueWithFreight
+from (select E.EmployeeID, sum(OrderValueWithoutFreight) + Freight as OrderValue
+        from (select O.OrderID, sum([O D].UnitPrice * Quantity * (1 - Discount)) as OrderValueWithoutFreight
                 from Orders O
                     inner join [Order Details] [O D]
                         on O.OrderID = [O D].OrderID
@@ -32,8 +32,8 @@ inner join Employees E
 
 -- 3a
 select E.FirstName, E.LastName, round(sum(sub2.OrderValue), 2) as OrderValue
-from (select E.EmployeeID, sum(OrderValueWithFreight) - Freight as OrderValue
-        from (select O.OrderID, sum([O D].UnitPrice * Quantity * (1 - Discount)) as OrderValueWithFreight
+from (select E.EmployeeID, sum(OrderValueWithoutFreight) + Freight as OrderValue
+        from (select O.OrderID, sum([O D].UnitPrice * Quantity * (1 - Discount)) as OrderValueWithoutFreight
                 from Orders O
                     inner join [Order Details] [O D]
                         on O.OrderID = [O D].OrderID
@@ -53,8 +53,8 @@ order by 3 desc
 
 -- 3b
 select E.FirstName, E.LastName, round(sum(sub2.OrderValue), 2) as OrderValue
-from (select E.EmployeeID, sum(OrderValueWithFreight) - Freight as OrderValue
-        from (select O.OrderID, sum([O D].UnitPrice * Quantity * (1 - Discount)) as OrderValueWithFreight
+from (select E.EmployeeID, sum(OrderValueWithoutFreight) + Freight as OrderValue
+        from (select O.OrderID, sum([O D].UnitPrice * Quantity * (1 - Discount)) as OrderValueWithoutFreight
                 from Orders O
                     inner join [Order Details] [O D]
                         on O.OrderID = [O D].OrderID
@@ -75,8 +75,8 @@ order by 3 desc
 -- 4a
 select E.FirstName, E.LastName, sub3.OrderValue, sub4.LatestOrderDate
 from (select E.EmployeeID, round(sum(sub2.OrderValue), 2) as OrderValue
-        from (select E.EmployeeID, sum(OrderValueWithFreight) - Freight as OrderValue
-                from (select O.OrderID, sum([O D].UnitPrice * Quantity * (1 - Discount)) as OrderValueWithFreight
+        from (select E.EmployeeID, sum(OrderValueWithoutFreight) + Freight as OrderValue
+                from (select O.OrderID, sum([O D].UnitPrice * Quantity * (1 - Discount)) as OrderValueWithoutFreight
                         from Orders O
                             inner join [Order Details] [O D]
                                 on O.OrderID = [O D].OrderID
@@ -104,8 +104,8 @@ group by E.EmployeeID, E.FirstName, E.LastName, sub3.OrderValue, sub4.LatestOrde
 -- 4b
 select E.FirstName, E.LastName, sub3.OrderValue, sub4.LatestOrderDate
 from (select E.EmployeeID, round(sum(sub2.OrderValue), 2) as OrderValue
-        from (select E.EmployeeID, sum(OrderValueWithFreight) - Freight as OrderValue
-                from (select O.OrderID, sum([O D].UnitPrice * Quantity * (1 - Discount)) as OrderValueWithFreight
+        from (select E.EmployeeID, sum(OrderValueWithoutFreight) + Freight as OrderValue
+                from (select O.OrderID, sum([O D].UnitPrice * Quantity * (1 - Discount)) as OrderValueWithoutFreight
                         from Orders O
                             inner join [Order Details] [O D]
                                 on O.OrderID = [O D].OrderID
