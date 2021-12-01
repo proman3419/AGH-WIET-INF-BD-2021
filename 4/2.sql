@@ -14,6 +14,13 @@ where UnitPrice < (select avg(UnitPrice)
                     from Products)
 
 -- 3
+select ProductID
+from Products P
+where UnitPrice < (select avg(UnitPrice)
+                    from Products P2
+                    where P.CategoryID = P2.CategoryID)
+order by ProductID
+
 select P.ProductID
 from Products P
     inner join Categories C

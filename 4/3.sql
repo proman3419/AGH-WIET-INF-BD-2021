@@ -1,10 +1,10 @@
 use Northwind
 
 -- 1
-select ProductID, ProductName, UnitPrice, sub.AvgUnitPrice,
-       UnitPrice - sub.AvgUnitPrice as UnitPriceAvgUnitPriceDiff
-from (select ProductID, ProductName, UnitPrice, (select avg(UnitPrice) from Products) as AvgUnitPrice
-        from Products) as sub
+select ProductID, ProductName, UnitPrice,
+        (select avg(UnitPrice) from Products) as Avg,
+        (select avg(UnitPrice) from Products) - UnitPrice as Diff
+from Products
 
 -- 2
 select ProductID, CategoryName, ProductName, UnitPrice,

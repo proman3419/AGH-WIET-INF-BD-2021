@@ -1,34 +1,25 @@
 use Northwind
 
 -- 1
--- nie ma rekordów dla zamówienia 1025, wybrałem inne
-select (select round(sum([O D].UnitPrice * Quantity * (1 - Discount)), 2)
-        from Orders O
-            inner join [Order Details] [O D]
-                on O.OrderID = [O D].OrderID
-        where O.OrderID = 11077) + Freight as OrderValue
-from Orders
-where OrderID = 11077
+select O.OrderID, (select sum(UnitPrice * Quantity * (1 - Discount))
+                    from [Order Details] OD
+                        where O.OrderID = OD.OrderID) + O.Freight as OrderValue
+from Orders O
+where O.OrderID = 10250
 
 -- 2
-select O2.OrderID, round(OrderValueWithoutFreight + Freight, 2) as OrderValue
-from (select O.OrderID, sum([O D].UnitPrice * Quantity * (1 - Discount)) as OrderValueWithoutFreight
-        from Orders O
-            inner join [Order Details] [O D]
-                on O.OrderID = [O D].OrderID
-        group by O.OrderID) as sub
-inner join Orders O2
-    on O2.OrderID = sub.OrderID
-order by 2 desc
+select O.OrderID, (select sum(UnitPrice * Quantity * (1 - Discount))
+                    from [Order Details] OD
+                        where O.OrderID = OD.OrderID) + O.Freight as OrderValue
+from Orders O
+order by OrderValue desc
 
 -- 3
 select CustomerID, Address, City, Region, PostalCode, Country
-from Customers
-where CustomerID not in (select C.CustomerID
-                            from Customers C
-                                inner join Orders O
-                                    on C.CustomerID = O.CustomerID
-                            where year(OrderDate) = 1997)
+from Customers C
+where not exists (select *
+                    from Orders O
+                    where C.CustomerID = O.CustomerID and year(OrderDate) = 1997)
 
 -- 4
 select ProductID, count(*) as DistinctCustomersCount
